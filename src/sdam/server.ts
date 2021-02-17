@@ -172,7 +172,8 @@ export class Server extends EventEmitter {
       this.emit(
         Server.DESCRIPTION_RECEIVED,
         new ServerDescription(this.description.hostAddress, event.reply, {
-          roundTripTime: calculateRoundTripTime(this.description.roundTripTime, event.duration)
+          roundTripTime: calculateRoundTripTime(this.description.roundTripTime, event.duration),
+          loadBalanced: options.loadBalanced
         })
       );
 
@@ -297,6 +298,7 @@ export class Server extends EventEmitter {
       return;
     }
 
+    // TODO: Durran: Alert the connection pool to the type of operation.
     this.s.pool.withConnection((err, conn, cb) => {
       if (err || !conn) {
         markServerUnknown(this, err);
@@ -322,6 +324,7 @@ export class Server extends EventEmitter {
       return;
     }
 
+    // TODO: Durran: Alert the connection pool to the type of operation.
     this.s.pool.withConnection((err, conn, cb) => {
       if (err || !conn) {
         markServerUnknown(this, err);
@@ -347,6 +350,7 @@ export class Server extends EventEmitter {
       return;
     }
 
+    // TODO: Durran: Alert the connection pool to the type of operation.
     this.s.pool.withConnection((err, conn, cb) => {
       if (err || !conn) {
         markServerUnknown(this, err);
@@ -380,6 +384,7 @@ export class Server extends EventEmitter {
       return;
     }
 
+    // TODO: Durran: Alert the connection pool to the type of operation.
     this.s.pool.withConnection((err, conn, cb) => {
       if (err || !conn) {
         markServerUnknown(this, err);

@@ -17,7 +17,8 @@ export enum TopologyType {
   ReplicaSetNoPrimary = 'ReplicaSetNoPrimary',
   ReplicaSetWithPrimary = 'ReplicaSetWithPrimary',
   Sharded = 'Sharded',
-  Unknown = 'Unknown'
+  Unknown = 'Unknown',
+  LoadBalanced = 'LoadBalanced'
 }
 
 /**
@@ -33,7 +34,8 @@ export enum ServerType {
   RSArbiter = 'RSArbiter',
   RSOther = 'RSOther',
   RSGhost = 'RSGhost',
-  Unknown = 'Unknown'
+  Unknown = 'Unknown',
+  LoadBalancer = 'LoadBalancer'
 }
 
 /** @internal */

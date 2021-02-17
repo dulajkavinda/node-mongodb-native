@@ -217,6 +217,7 @@ export class Topology extends EventEmitter {
       retryWrites: DEFAULT_OPTIONS.get('retryWrites'),
       serverSelectionTimeoutMS: DEFAULT_OPTIONS.get('serverSelectionTimeoutMS'),
       directConnection: DEFAULT_OPTIONS.get('directConnection'),
+      loadBalanced: DEFAULT_OPTIONS.get('loadBalanced'),
       metadata: DEFAULT_OPTIONS.get('metadata'),
       useRecoveryToken: DEFAULT_OPTIONS.get('useRecoveryToken'),
       monitorCommands: DEFAULT_OPTIONS.get('monitorCommands'),
@@ -292,7 +293,7 @@ export class Topology extends EventEmitter {
       connectionTimers: new Set<NodeJS.Timeout>()
     };
 
-    if (options.srvHost) {
+    if (options.srvHost && !options.loadBalanced) {
       this.s.srvPoller =
         options.srvPoller ||
         new SrvPoller({
@@ -770,6 +771,10 @@ function topologyTypeFromOptions(options?: TopologyOptions) {
 
   if (options?.replicaSet) {
     return TopologyType.ReplicaSetNoPrimary;
+  }
+
+  if (options?.loadBalanced) {
+    return TopologyType.LoadBalanced;
   }
 
   return TopologyType.Unknown;

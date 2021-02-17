@@ -2,7 +2,7 @@ import { GetMore, KillCursor, Msg, WriteProtocolMessageType } from './commands';
 import { calculateDurationInMs, deepCopy } from '../utils';
 import type { ConnectionPool, ConnectionPoolOptions } from './connection_pool';
 import type { Connection } from './connection';
-import type { Document } from '../bson';
+import type { Document, ObjectId } from '../bson';
 import type { AnyError } from '../error';
 
 /**
@@ -52,10 +52,12 @@ export class ConnectionPoolClosedEvent extends ConnectionPoolMonitoringEvent {
 export class ConnectionCreatedEvent extends ConnectionPoolMonitoringEvent {
   /** A monotonically increasing, per-pool id for the newly created connection */
   connectionId: number | '<monitor>';
+  serverId?: ObjectId;
 
   constructor(pool: ConnectionPool, connection: Connection) {
     super(pool);
     this.connectionId = connection.id;
+    this.serverId = connection.serverId;
   }
 }
 
@@ -66,10 +68,12 @@ export class ConnectionCreatedEvent extends ConnectionPoolMonitoringEvent {
 export class ConnectionReadyEvent extends ConnectionPoolMonitoringEvent {
   /** The id of the connection */
   connectionId: number | '<monitor>';
+  serverId?: ObjectId;
 
   constructor(pool: ConnectionPool, connection: Connection) {
     super(pool);
     this.connectionId = connection.id;
+    this.serverId = connection.serverId;
   }
 }
 
@@ -82,11 +86,13 @@ export class ConnectionClosedEvent extends ConnectionPoolMonitoringEvent {
   connectionId: number | '<monitor>';
   /** The reason the connection was closed */
   reason: string;
+  serverId?: ObjectId;
 
   constructor(pool: ConnectionPool, connection: Connection, reason: string) {
     super(pool);
     this.connectionId = connection.id;
     this.reason = reason || 'unknown';
+    this.serverId = connection.serverId;
   }
 }
 
